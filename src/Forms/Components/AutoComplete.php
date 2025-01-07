@@ -8,10 +8,12 @@ use Filament\Forms\Components\TextInput;
 class AutoComplete extends TextInput
 {
     protected string $view = 'text-input-autocomplete::forms.components.auto-complete';
+
     protected \Closure|bool|null $datalistNative = true;
+
     protected \Closure|int|null $datalistMaxItems = 10;
 
-    public function datalistMaxItems(int | Closure | null $condition = 10): static
+    public function datalistMaxItems(int|Closure|null $condition = 10): static
     {
         $this->datalistMaxItems = $condition;
 
@@ -23,7 +25,7 @@ class AutoComplete extends TextInput
         return $this->evaluate($this->datalistMaxItems) ?? false;
     }
 
-    public function datalistNative(bool | Closure | null $condition = true): static
+    public function datalistNative(bool|Closure|null $condition = true): static
     {
         $this->datalistNative = $condition;
 
