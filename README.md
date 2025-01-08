@@ -6,7 +6,7 @@
 
 This package replaces the native `<datalist>` functionality with a custom, non-native autocomplete for the TextInput component in FilamentPHP 3, offering enhanced flexibility and customization options.
 
-![screenshot](images/demo.png)
+![](./images/demo.png | width=200)
 
 ## Installation
 
@@ -19,6 +19,8 @@ composer require borjajimnz/text-input-autocomplete
 ## Usage
 
 By default, we will use a non-native datalist. If you want to use the native one, simply add `->datalistNative()`.
+
+Use the *Tab* key to navigate through the available options in the datalist, or move around using the *Up* and *Down* arrow keys.
 
 ```php
 use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
