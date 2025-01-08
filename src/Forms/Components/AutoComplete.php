@@ -9,7 +9,7 @@ class AutoComplete extends TextInput
 {
     protected string $view = 'text-input-autocomplete::forms.components.auto-complete';
 
-    protected \Closure|bool|null $datalistNative = true;
+    protected \Closure|bool|null $datalistNative = false;
 
     protected \Closure|string|null $nativeId = null;
 
@@ -20,6 +20,11 @@ class AutoComplete extends TextInput
     protected \Closure|int|null|false $datalistMaxItems = false;
 
     protected \Closure|int|null $datalistMinCharsToSearch = 0;
+
+    protected function setUp(): void
+    {
+        $this->autocomplete = false;
+    }
 
     public function datalistNativeId(bool|Closure|null $condition = true): static
     {

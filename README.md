@@ -15,6 +15,19 @@ composer require borjajimnz/text-input-autocomplete
 
 ## Usage
 
+By default, we will use a non-native datalist. If you want to use the native one, simply add `->datalistNative()`.
+
+```php
+use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
+
+AutoComplete::make('favorite')
+    ->datalist(function () {
+        return ['php','laravel','filamentphp', 'tailwindcss'];
+    });
+```
+
+These are all the options available to configure your field, if needed.
+
 ```php
 use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
 
@@ -29,7 +42,7 @@ AutoComplete::make('favorite')
     });
 ```
 
-Or if you want to use the native datalist with a customized ID.
+Or if you want to use the native datalist with a custom ID.
 
 ```php
 use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;

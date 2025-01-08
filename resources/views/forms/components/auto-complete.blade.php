@@ -19,12 +19,13 @@
     $suffixIcon = $getSuffixIcon();
     $suffixLabel = $getSuffixLabel();
     $statePath = $getStatePath();
-    $dataListNative = $getDatalistNative() ?? true;
+    $dataListNative = $getDatalistNative() ?? false;
     $dataListMaxItems = $getDatalistMaxItems();
     $dataListMinCharsToSearch = $getDatalistMinCharsToSearch() ?? 2;
     $dataListOpenOnClick = $getDatalistOpenOnClick() ?? false;
     $dataListDisableScroll = $getDatalistDisableScroll() ?? false;
     $dataListNativeId = $getDatalistNativeId() ?? $id;
+    $datalistXdata = null;
 
     if ($dataListNative === false && $datalistOptions) {
         $datalistAttributes = [
@@ -44,7 +45,7 @@
         $xData = null;
     }
 
- if ($dataListNative === false && filled($datalistOptions)) {
+    if ($dataListNative === false && filled($datalistOptions)) {
         $datalistXdata = '{
             state: $wire.$entangle(\'' . $statePath  . '\'),
             isDatalistOpen: false,
@@ -203,8 +204,8 @@
                     ->class(['fi-fo-text-input overflow-hidden'])
             "
         >
-                <x-filament::input
-                    :attributes="
+            <x-filament::input
+                :attributes="
                     \Filament\Support\prepare_inherited_attributes($getExtraInputAttributeBag())
                         ->merge($extraAlpineAttributes, escape: false)
                         ->merge([
@@ -235,38 +236,38 @@
                             '[&::-ms-reveal]:hidden' => $isPasswordRevealable,
                         ])
                 "
-                />
+            />
         </x-filament::input.wrapper>
 
 
         @if ($dataListNative === false && $datalistOptions)
             <div
-                    x-transition
-                    x-cloak
-                    x-show="isDatalistOpen"
-                    class="absolute w-full min-w-48 md:min-w-64 z-50 mt-1 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 px-1"
+                x-transition
+                x-cloak
+                x-show="isDatalistOpen"
+                class="absolute w-full min-w-48 md:min-w-64 z-50 mt-1 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 px-1"
+            >
+                <ul
+                    x-ref="optionsList"
+                    class="py-1 w-full overflow-y-auto"
+                    @if ($dataListDisableScroll === false)
+                        style="max-height: 195px;"
+                    @endif
                 >
-                    <ul
-                        x-ref="optionsList"
-                        class="py-1 w-full overflow-y-auto"
-                        @if ($dataListDisableScroll === false)
-                            style="max-height: 195px;"
-                        @endif
-                    >
-                        <template x-for="(item, index) in items" :key="index">
-                            <li
-                                x-text="item"
-                                @click="selectItem(item)"
-                                @mousedown.prevent
-                                :class="{
+                    <template x-for="(item, index) in items" :key="index">
+                        <li
+                            x-text="item"
+                            @click="selectItem(item)"
+                            @mousedown.prevent
+                            :class="{
                                 'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
                                 'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
                                 'p-2 cursor-pointer text-left text-sm rounded-lg': true
                             }"
-                                :tabindex="index === highlightedIndex ? 0 : -1"
-                            ></li>
-                        </template>
-                    </ul>
+                            :tabindex="index === highlightedIndex ? 0 : -1"
+                        ></li>
+                    </template>
+                </ul>
             </div>
         @endif
     </div>
