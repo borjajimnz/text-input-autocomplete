@@ -15,11 +15,11 @@ class AutoComplete extends TextInput
 
     protected \Closure|bool|null $datalistOpenOnClick = false;
 
-    protected \Closure|bool|null $datalistScrollable = false;
+    protected \Closure|bool|null $datalistDisableScroll = false;
 
     protected \Closure|int|null|false $datalistMaxItems = false;
 
-    protected \Closure|int|null $datalistMinCharsToSearch = 2;
+    protected \Closure|int|null $datalistMinCharsToSearch = 0;
 
     public function datalistNativeId(bool|Closure|null $condition = true): static
     {
@@ -57,16 +57,16 @@ class AutoComplete extends TextInput
         return $this->evaluate($this->datalistOpenOnClick) ?? false;
     }
 
-    public function datalistScrollable(bool|Closure|null $condition = true): static
+    public function datalistDisableScroll(bool|Closure|null $condition = true): static
     {
-        $this->datalistScrollable = $condition;
+        $this->datalistDisableScroll = $condition;
 
         return $this;
     }
 
-    public function getDatalistScrollable(): bool
+    public function getDatalistDisableScroll(): bool
     {
-        return $this->evaluate($this->datalistScrollable) ?? false;
+        return $this->evaluate($this->datalistDisableScroll) ?? false;
     }
 
     public function datalistMaxItems(int|Closure|false|null $condition = false): static
