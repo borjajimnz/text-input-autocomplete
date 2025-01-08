@@ -204,9 +204,9 @@
                                 @click="selectItem(item)"
                                 @mousedown.prevent
                                 :class="{
-                                'bg-primary-50 dark:bg-primary-950 text-primary-600 text-left dark:text-primary-400': index === highlightedIndex,
+                                'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
                                 'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
-                                'px-2 py-1 cursor-pointer': true
+                                'px-2 py-1 cursor-pointer text-left': true
                             }"
                             ></li>
                         </template>
