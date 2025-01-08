@@ -27,7 +27,7 @@ use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
 
 AutoComplete::make('favorite')
     ->datalist(function () {
-        return ['php','laravel','filamentphp', 'tailwindcss'];
+        return ['php','laravel', 'livewire','filamentphp', 'tailwindcss'];
     });
 ```
 
@@ -43,7 +43,7 @@ AutoComplete::make('favorite')
     ->datalistDisableScroll(false)
     ->datalistOpenOnClick(true)
     ->datalist(function () {
-        return ['php','laravel','filamentphp', 'tailwindcss'];
+        return ['php','laravel', 'livewire','filamentphp', 'tailwindcss'];
     });
 ```
 
@@ -55,7 +55,7 @@ use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
 AutoComplete::make('favorite')
     ->datalistNativeId('customized.id')
     ->datalist(function () {
-        return ['php','laravel','filamentphp', 'tailwindcss'];
+        return ['php','laravel', 'livewire','filamentphp', 'tailwindcss'];
     });
 ```
 
@@ -66,6 +66,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [FilamentPHP](https://github.com/filamentphp)
+- [Livewire](https://livewire.laravel.com)
 - [Laravel](https://github.com/laravel)
 
 ## License

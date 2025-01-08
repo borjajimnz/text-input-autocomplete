@@ -60,7 +60,7 @@
                     return;
                 }
 
-                searchTerm = (this.state)?.toString().toLowerCase();
+                const searchTerm = (this.state)?.toString().toLowerCase();
                 if (this.minChars <= 0 && !this.state) {
                     this.items = this.options;
                 } else {
@@ -69,7 +69,14 @@
                     );
                 }
 
-                '. ( $dataListMaxItems > 0 ? 'this.items = this.items.slice(0, this.maxItems)' : '') .'
+                if (this.items.length === 1 && this.items[0] === this.state) {
+                    this.closeDropdown();
+                    return;
+                }
+
+                if (this.maxItems > 0) {
+                    this.items = this.items.slice(0, this.maxItems);
+                }
 
                 this.isDatalistOpen = this.items.length > 0;
                 this.highlightedIndex = -1;
@@ -242,10 +249,10 @@
 
         @if ($dataListNative === false && $datalistOptions)
             <div
-                x-transition
                 x-cloak
                 x-show="isDatalistOpen"
-                class="absolute w-full min-w-48 md:min-w-64 z-50 mt-1 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 px-1"
+                style="margin-top: 7px"
+                class="absolute w-full min-w-48 md:min-w-64 z-50 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 px-1"
             >
                 <ul
                     x-ref="optionsList"
