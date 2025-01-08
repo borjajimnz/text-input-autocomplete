@@ -20,7 +20,21 @@
     $suffixLabel = $getSuffixLabel();
     $statePath = $getStatePath();
     $dataListNative = $getDatalistNative() ?? true;
-    $maxItems = $getDatalistMaxItems();
+    $dataListMaxItems = $getDatalistMaxItems();
+    $dataListMinCharsToSearch = $getDatalistMinCharsToSearch() ?? 2;
+    $dataListOpenOnClick = $getDatalistOpenOnClick() ?? false;
+    $dataListScrollable = $getDatalistScrollable() ?? false;
+    $dataListNativeId = $getDatalistNativeId() ?? $id;
+
+    if ($dataListNative === false && $datalistOptions) {
+        $datalistAttributes = [
+            '@keydown' => 'onKeyDown($event)',
+            '@input' => 'filterItems',
+            '@click' => $dataListOpenOnClick ? 'filterItems' : null,
+            'x-model' => 'state',
+            '@click.away' => 'isDatalistOpen = false'
+        ];
+    }
 
     if ($isPasswordRevealable) {
         $xData = '{ isPasswordRevealed: false }';
@@ -32,28 +46,35 @@
 
    if ($dataListNative === false && filled($datalistOptions)) {
         $xData = '{
-            search: null,
-            state: null,
+            state: $wire.$entangle(\'' . $statePath  . '\'),
             isDatalistOpen: false,
             items: [],
             highlightedIndex: 0,
             options: ' . json_encode($datalistOptions) . ',
-            maxItems: ' . $maxItems . ',
+            maxItems: '. $dataListMaxItems . ',
+            minChars: '. $dataListMinCharsToSearch . ',
             filterItems() {
-                if (!this.search || this.search.length < 2) {
+                if (this.state?.length < this.minChars) {
                     this.closeDropdown();
                     return;
                 }
 
-                searchTerm = this.search.toLowerCase();
-                this.items = this.options.filter(item =>
-                    item.toLowerCase().includes(searchTerm)
-                ).slice(0, this.maxItems);
+                searchTerm = (this.state)?.toString().toLowerCase();
+                if (this.minChars <= 0 && !this.state) {
+                    this.items = this.options;
+                } else {
+                    this.items = this.options.filter(item =>
+                        (item).toString().toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                '. ( $dataListMaxItems > 0 ? 'this.items = this.items.slice(0, this.maxItems)' : '') .'
+
                 this.isDatalistOpen = this.items.length > 0;
                 this.highlightedIndex = 0;
             },
             selectItem(item) {
-                this.search = item;
+                this.state = item;
                 this.$wire.set("' . $statePath . '", item);
                 setTimeout(() => {
                     this.closeDropdown();
@@ -135,8 +156,9 @@
                 ->class(['fi-fo-text-input overflow-hidden'])
         "
     >
-        <x-filament::input
-            :attributes="
+        <div>
+            <x-filament::input
+                :attributes="
                 \Filament\Support\prepare_inherited_attributes($getExtraInputAttributeBag())
                     ->merge($extraAlpineAttributes, escape: false)
                     ->merge([
@@ -148,7 +170,7 @@
                         'inlinePrefix' => $isPrefixInline && (count($prefixActions) || $prefixIcon || filled($prefixLabel)),
                         'inlineSuffix' => $isSuffixInline && (count($suffixActions) || $suffixIcon || filled($suffixLabel)),
                         'inputmode' => $getInputMode(),
-                        'list' => $datalistOptions ? $id . '-list' : null,
+                        'list' => $datalistOptions ? $dataListNativeId . '-list' : null,
                         'max' => (! $isConcealed) ? $getMaxValue() : null,
                         'maxlength' => (! $isConcealed) ? $getMaxLength() : null,
                         'min' => (! $isConcealed) ? $getMinValue() : null,
@@ -161,40 +183,41 @@
                         $applyStateBindingModifiers('wire:model') => $statePath,
                         'x-bind:type' => $isPasswordRevealable ? 'isPasswordRevealed ? \'text\' : \'password\'' : null,
                         'x-mask' . ($mask instanceof \Filament\Support\RawJs ? ':dynamic' : '') => filled($mask) ? $mask : null,
-                        '@keydown' => 'onKeyDown($event)',
-                        '@input' => 'filterItems',
-                        'x-model' => 'search',
-                    ], escape: false)
+                        ...($datalistAttributes ?? [])
+            ], escape: false)
                     ->class([
                         '[&::-ms-reveal]:hidden' => $isPasswordRevealable,
                     ])
             "
-        />
+            />
 
-        <div
-            x-show="isDatalistOpen"
-            x-transition
-            class="absolute z-50 mt-1 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600"
-        >
-            <ul class="py-1">
-                <template x-for="(item, index) in items" :key="index">
-                    <li
-                        x-text="item"
-                        @click="selectItem(item)"
-                        @mousedown.prevent
-                        :class="{
-                            'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
-                            'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
-                            'px-4 py-2 cursor-pointer': true
-                        }"
-                    ></li>
-                </template>
-            </ul>
+            @if ($dataListNative === false && $datalistOptions)
+                <div
+                    x-show="isDatalistOpen"
+                    x-transition
+                    class="absolute min-w-48 md:min-w-64 z-50 mt-1 {{ $dataListScrollable ? 'overflow-y-auto' : '' }} bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600"
+                >
+                    <ul class="py-1 w-full" style="{{ $dataListScrollable ? 'overflow-auto; max-height: 200px' : '' }}">
+                        <template x-for="(item, index) in items" :key="index">
+                            <li
+                                x-text="item"
+                                @click="selectItem(item)"
+                                @mousedown.prevent
+                                :class="{
+                                'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
+                                'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
+                                'px-2 py-1 cursor-pointer': true
+                            }"
+                            ></li>
+                        </template>
+                    </ul>
+                </div>
+            @endif
         </div>
     </x-filament::input.wrapper>
 
     @if ($dataListNative && $datalistOptions)
-        <datalist id="{{ $id }}-list">
+        <datalist id="{{ $dataListNativeId }}-list">
             @foreach ($datalistOptions as $option)
                 <option value="{{ $option }}" />
             @endforeach

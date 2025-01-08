@@ -20,7 +20,21 @@ use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
 
 AutoComplete::make('favorite')
     ->datalistNative(false)
-    ->datalistMaxItems(10)
+    ->datalistMinCharsToSearch(0)
+    ->datalistMaxItems(false)
+    ->datalistScrollable(true)
+    ->datalistOpenOnClick(true)
+    ->datalist(function () {
+        return ['php','laravel','filamentphp', 'tailwindcss'];
+    });
+```
+
+
+```php
+use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
+
+AutoComplete::make('favorite')
+    ->datalistNativeId('customized.id')
     ->datalist(function () {
         return ['php','laravel','filamentphp', 'tailwindcss'];
     });
