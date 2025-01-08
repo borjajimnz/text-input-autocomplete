@@ -13,7 +13,7 @@ class AutoComplete extends TextInput
 
     protected \Closure|string|null $nativeId = null;
 
-    protected \Closure|bool|null $datalistOpenOnClick = false;
+    protected \Closure|bool|null $datalistOpenOnClick = true;
 
     protected \Closure|bool|null $datalistDisableScroll = false;
 

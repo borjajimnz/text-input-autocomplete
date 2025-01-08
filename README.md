@@ -22,7 +22,7 @@ AutoComplete::make('favorite')
     ->datalistNative(false)
     ->datalistMinCharsToSearch(0)
     ->datalistMaxItems(false)
-    ->datalistScrollable(true)
+    ->datalistDisableScroll(false)
     ->datalistOpenOnClick(true)
     ->datalist(function () {
         return ['php','laravel','filamentphp', 'tailwindcss'];

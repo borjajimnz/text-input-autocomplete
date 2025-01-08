@@ -241,9 +241,6 @@
 
         @if ($dataListNative === false && $datalistOptions)
             <div
-                    @if ($dataListDisableScroll === false)
-                    style="max-height: 200px;"
-                    @endif
                     x-transition
                     x-cloak
                     x-show="isDatalistOpen"
