@@ -10,12 +10,16 @@ class AutoComplete extends TextInput
     protected string $view = 'text-input-autocomplete::forms.components.auto-complete';
 
     protected \Closure|bool|null $datalistNative = true;
-    protected \Closure|string|null $nativeId = null;
-    protected \Closure|bool|null $datalistOpenOnClick = false;
-    protected \Closure|bool|null $datalistScrollable = false;
-    protected \Closure|int|null|false $datalistMaxItems = false;
-    protected \Closure|int|null $datalistMinCharsToSearch = 2;
 
+    protected \Closure|string|null $nativeId = null;
+
+    protected \Closure|bool|null $datalistOpenOnClick = false;
+
+    protected \Closure|bool|null $datalistScrollable = false;
+
+    protected \Closure|int|null|false $datalistMaxItems = false;
+
+    protected \Closure|int|null $datalistMinCharsToSearch = 2;
 
     public function datalistNativeId(bool|Closure|null $condition = true): static
     {
