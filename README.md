@@ -29,6 +29,7 @@ AutoComplete::make('favorite')
     });
 ```
 
+Or if you want to use the native datalist with a customized ID.
 
 ```php
 use Borjajimnz\TextInputAutocomplete\Forms\Components\AutoComplete;
@@ -38,12 +39,6 @@ AutoComplete::make('favorite')
     ->datalist(function () {
         return ['php','laravel','filamentphp', 'tailwindcss'];
     });
-```
-
-## Testing
-
-```bash
-composer test
 ```
 
 ## Security Vulnerabilities
