@@ -45,7 +45,7 @@ class AutoComplete extends TextInput
         return $this->evaluate($this->datalistNative) ?? false;
     }
 
-    public function datalistOpenOnClick(bool|Closure|null $condition = false): static
+    public function datalistOpenOnClick(bool|Closure|null $condition = true): static
     {
         $this->datalistOpenOnClick = $condition;
 
@@ -57,7 +57,7 @@ class AutoComplete extends TextInput
         return $this->evaluate($this->datalistOpenOnClick) ?? false;
     }
 
-    public function datalistScrollable(bool|Closure|null $condition = false): static
+    public function datalistScrollable(bool|Closure|null $condition = true): static
     {
         $this->datalistScrollable = $condition;
 
@@ -81,7 +81,7 @@ class AutoComplete extends TextInput
         return $this->evaluate($this->datalistMaxItems) ?? false;
     }
 
-    public function datalistMinCharsToSearch(int|Closure|null $condition = 2): static
+    public function datalistMinCharsToSearch(int|Closure|null $condition = 0): static
     {
         $this->datalistMinCharsToSearch = $condition;
 
