@@ -31,8 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Borja Jiménez\\TextInputAutocomplete\\": "src/",
-            "Borja Jiménez\\TextInputAutocomplete\\Database\\Factories\\": "database/factories/"
+            "Borjajimnz\\TextInputAutocomplete\\": "src/",
+            "Borjajimnz\\TextInputAutocomplete\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
