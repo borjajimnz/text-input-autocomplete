@@ -44,12 +44,12 @@
         $xData = null;
     }
 
-   if ($dataListNative === false && filled($datalistOptions)) {
+ if ($dataListNative === false && filled($datalistOptions)) {
         $xData = '{
             state: $wire.$entangle(\'' . $statePath  . '\'),
             isDatalistOpen: false,
             items: [],
-            highlightedIndex: 0,
+            highlightedIndex: -1,
             options: ' . json_encode($datalistOptions) . ',
             maxItems: '. $dataListMaxItems . ',
             minChars: '. $dataListMinCharsToSearch . ',
@@ -71,7 +71,7 @@
                 '. ( $dataListMaxItems > 0 ? 'this.items = this.items.slice(0, this.maxItems)' : '') .'
 
                 this.isDatalistOpen = this.items.length > 0;
-                this.highlightedIndex = 0;
+                this.highlightedIndex = -1;
             },
             selectItem(item) {
                 this.state = item;
@@ -83,6 +83,32 @@
             closeDropdown() {
                 this.isDatalistOpen = false;
                 this.items = [];
+                this.highlightedIndex = -1;
+            },
+            scrollItemIntoView(index) {
+                if (!this.isDatalistOpen) return;
+
+                this.$nextTick(() => {
+                    const container = this.$refs.optionsList;
+                    const items = container.querySelectorAll("li");
+                    const item = items[index];
+
+                    if (!container || !item) return;
+
+                    const containerHeight = container.clientHeight;
+                    const itemHeight = item.clientHeight;
+                    const itemTop = item.offsetTop;
+                    const scrollTop = container.scrollTop;
+
+                    // Si el elemento está por debajo del área visible
+                    if (itemTop + itemHeight > scrollTop + containerHeight) {
+                        container.scrollTop = itemTop + itemHeight - containerHeight;
+                    }
+                    // Si el elemento está por encima del área visible
+                    else if (itemTop < scrollTop) {
+                        container.scrollTop = itemTop;
+                    }
+                });
             },
             onKeyDown(event) {
                 if (!this.isDatalistOpen) {
@@ -90,13 +116,20 @@
                 }
 
                 switch (event.key) {
-                    case "ArrowUp":
+                    case "Tab":
                         event.preventDefault();
-                        this.highlightedIndex = this.highlightedIndex > 0 ? this.highlightedIndex - 1 : this.items.length - 1;
-                        break;
-                    case "ArrowDown":
-                        event.preventDefault();
-                        this.highlightedIndex = this.highlightedIndex < this.items.length - 1 ? this.highlightedIndex + 1 : 0;
+                        if (event.shiftKey) {
+                            // Move up
+                            this.highlightedIndex = this.highlightedIndex > 0
+                                ? this.highlightedIndex - 1
+                                : this.items.length - 1;
+                        } else {
+                            // Move down
+                            this.highlightedIndex = this.highlightedIndex < this.items.length - 1
+                                ? this.highlightedIndex + 1
+                                : 0;
+                        }
+                        this.scrollItemIntoView(this.highlightedIndex);
                         break;
                     case "Enter":
                         event.preventDefault();
@@ -195,19 +228,24 @@
                 <div
                     x-show="isDatalistOpen"
                     x-transition
-                    class="absolute min-w-48 md:min-w-64 z-50 mt-1 {{ $dataListScrollable ? 'overflow-y-auto' : '' }} bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600"
+                    class="absolute min-w-48 md:min-w-64 z-50 mt-1 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600"
                 >
-                    <ul class="py-1 w-full" style="{{ $dataListScrollable ? 'overflow-auto; max-height: 200px' : '' }}">
+                    <ul
+                        x-ref="optionsList"
+                        class="py-1 w-full overflow-y-auto"
+                        style="max-height: 200px;"
+                    >
                         <template x-for="(item, index) in items" :key="index">
                             <li
                                 x-text="item"
                                 @click="selectItem(item)"
                                 @mousedown.prevent
                                 :class="{
-                                'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
-                                'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
-                                'px-2 py-1 cursor-pointer text-left': true
-                            }"
+                        'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
+                        'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
+                        'px-2 py-1 cursor-pointer text-left': true
+                    }"
+                                :tabindex="index === highlightedIndex ? 0 : -1"
                             ></li>
                         </template>
                     </ul>
