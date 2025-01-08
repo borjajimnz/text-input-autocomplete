@@ -6,7 +6,7 @@
 
 This package replaces the native `<datalist>` functionality with a custom, non-native autocomplete for the TextInput component in FilamentPHP 3, offering enhanced flexibility and customization options.
 
-![](./images/demo.png | width=200)
+![](./images/demo.png =x200)
 
 ## Installation
 
