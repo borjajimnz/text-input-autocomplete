@@ -5,6 +5,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/borjajimnz/text-input-autocomplete.svg?style=flat-square)](https://packagist.org/packages/borjajimnz/text-input-autocomplete)
 
 This package replaces the native `<datalist>` functionality with a custom, non-native autocomplete for the TextInput component in FilamentPHP 3, offering enhanced flexibility and customization options.
+
+![screenshot](images/demo.png)
+
 ## Installation
 
 You can install the package via composer:

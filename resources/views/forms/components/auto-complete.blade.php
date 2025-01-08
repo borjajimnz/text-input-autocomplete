@@ -260,9 +260,9 @@
                             @click="selectItem(item)"
                             @mousedown.prevent
                             :class="{
-                                'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
-                                'hover:bg-gray-50 dark:hover:bg-gray-800': index !== highlightedIndex,
-                                'p-2 cursor-pointer text-left text-sm rounded-lg': true
+                                'bg-primary-50 hover:bg-gray-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400': index === highlightedIndex,
+                                '': index !== highlightedIndex,
+                                'p-2 cursor-pointer text-left text-sm rounded-lg hover:bg-gray-50 dark:hover:bg-custom-400 dark:hover:text-gray-400': true
                             }"
                             :tabindex="index === highlightedIndex ? 0 : -1"
                         ></li>
