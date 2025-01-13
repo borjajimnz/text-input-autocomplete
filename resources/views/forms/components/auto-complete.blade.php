@@ -282,7 +282,7 @@
     @if ($dataListNative && $datalistOptions)
         <datalist id="{{ $dataListNativeId }}-list">
             @foreach ($datalistOptions as $option)
-                <option value="{{ $option }}" />
+                <option value="{{ $option }}"></option>
             @endforeach
         </datalist>
     @endif
