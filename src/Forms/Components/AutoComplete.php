@@ -8,11 +8,17 @@ use Filament\Forms\Components\TextInput;
 class AutoComplete extends TextInput
 {
     protected \Closure|string|null $nativeId = null;
+
     protected \Closure|bool|null $datalistNative = false;
+
     protected \Closure|bool|null $datalistOpenOnClick = true;
+
     protected \Closure|int|null $datalistMinCharsToSearch = 0;
+
     protected \Closure|bool|null $datalistDisableScroll = false;
+
     protected \Closure|int|null|false $datalistMaxItems = false;
+
     protected string $view = 'text-input-autocomplete::forms.components.auto-complete';
 
     protected function setUp(): void
